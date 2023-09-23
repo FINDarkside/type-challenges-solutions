@@ -16,7 +16,7 @@ type cases = [
 // ============= Your Code Here =============
 declare function PromiseAll<T extends ReadonlyArray<any>>(
   values: readonly [...T]
-): T extends readonly [any, ...infer Rest]
+): T extends readonly [any, ...any]
   ? Promise<AwaitAll<T>>
   : Promise<Awaited<T[number]>[]>;
 
