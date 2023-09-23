@@ -49,6 +49,8 @@ type Chainable<T = {}> = {
   option<Key extends string, Value>(
     key: Key extends keyof T ? never : Key,
     value: Value
-  ): Chainable<Omit<T, Key> & { [k in Key]: Value }>;
+  ): Chainable<{
+    [K in keyof T | Key]: K extends keyof Omit<T, Key> ? T[K] : Value;
+  }>;
   get(): T;
 };
