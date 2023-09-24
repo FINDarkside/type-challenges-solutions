@@ -10,10 +10,12 @@ type cases = [
   Expect<Equal<GreaterThan<20, 20>, false>>,
   Expect<Equal<GreaterThan<10, 100>, false>>,
   Expect<Equal<GreaterThan<111, 11>, true>>,
-  Expect<Equal<GreaterThan<1234567891011, 1234567891010>, true>>
+  Expect<Equal<GreaterThan<1234567891011, 1234567891010>, true>>,
 ];
 
 // ============= Your Code Here =============
+// TODO: Refactor, can probably be done with less code
+
 type ToCharArray<
   T extends string,
   Result extends string[] = []
@@ -21,7 +23,8 @@ type ToCharArray<
   ? ToCharArray<Tail, [...Result, Char]>
   : Result;
 
-// Helper function to implement GreaterThan for small numbers
+// Helper function to for smaller numbers. Return 1 if first argument is greater
+// 0 if numbers are equal and -1 if first argument is smaller
 type CompareNumbers<
   T extends number,
   U extends number,
