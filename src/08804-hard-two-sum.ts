@@ -25,14 +25,11 @@ type TwoSum<
   T extends number[],
   U extends number,
   UsedNumbers extends any[] = [],
-  Sum extends any[] = [],
-  IsMatch = UsedNumbers["length"] extends 2
-    ? Sum["length"] extends U
-      ? true
-      : false
-    : false
+  Sum extends any[] = []
 > = UsedNumbers["length"] extends 2
-  ? IsMatch
+  ? Sum["length"] extends U
+    ? true
+    : false
   : T extends [infer N extends number, ...infer Rest extends number[]]
   ? TwoSum<
       Rest,
@@ -42,4 +39,4 @@ type TwoSum<
     > extends true
     ? true
     : TwoSum<Rest, U, UsedNumbers, Sum>
-  : IsMatch;
+  : false;
