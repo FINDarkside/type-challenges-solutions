@@ -11,19 +11,8 @@ type cases = [
 ];
 
 // ============= Your Code Here =============
-type ParseUrlParams<
-  T,
-  CurrentString extends string = '',
-  IsKey = false,
-  Result extends string[] = []
-> = T extends `${infer First}${infer Rest extends string}`
-  ? First extends '/'
-    ? IsKey extends true
-      ? ParseUrlParams<Rest, '', false, [...Result, CurrentString]>
-      : ParseUrlParams<Rest, '', false, Result>
-    : First extends ':'
-    ? ParseUrlParams<Rest, '', true, Result>
-    : ParseUrlParams<Rest, `${CurrentString}${First}`, IsKey, Result>
-  : IsKey extends true
-  ? [...Result, CurrentString][number]
-  : Result[number];
+type ParseUrlParams<T extends string> = T extends `${infer Head}/${infer Tail}`
+  ? ParseUrlParams<Head> | ParseUrlParams<Tail>
+  : T extends `:${infer Rest}`
+  ? Rest
+  : never;
