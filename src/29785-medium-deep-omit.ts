@@ -25,27 +25,11 @@ type cases = [
 ];
 
 // ============= Your Code Here =============
-type Split<
-  S extends string,
-  Acc extends string[] = []
-> = S extends `${infer Head}.${infer Tail}`
-  ? Split<Tail, [...Acc, Head]>
-  : [...Acc, S];
-
 type DeepOmit<
   T,
-  Path extends string,
-  PathParts extends string[] = Split<Path>,
-  KeyToOmit = PathParts extends [infer Head, ...any] ? Head : never,
-  NextKeys extends string[] = PathParts extends [any, ...infer Tail] ? Tail : []
-> = {
-  [K in keyof T as PathParts['length'] extends 1
-    ? K extends KeyToOmit
-      ? never
-      : K
-    : K]: K extends KeyToOmit
-    ? PathParts['length'] extends 1
-      ? never
-      : DeepOmit<T[K], Path, NextKeys>
-    : T[K];
-};
+  Path extends string
+> = Path extends `${infer KeyToOmit}.${infer Rest}`
+  ? {
+      [K in keyof T]: K extends KeyToOmit ? DeepOmit<T[K], Rest> : T[K];
+    }
+  : { [K in keyof T as K extends Path ? never : K]: T[K] };
